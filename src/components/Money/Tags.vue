@@ -18,13 +18,17 @@ import {Component} from 'vue-property-decorator';
 
 @Component({
   computed: {
-    tagList(){
-      // return this.$store.fetchTags();
+    tagList() {
+      return this.$store.state.tagList;
     }
   }
 })
 export default class Tags extends Vue {
   selectedTags: string[] = [];//选中数组
+
+  created() {
+    this.$store.commit('fetchTags');
+  }
 
   toggle(tag: string) {//选中标签
     const index = this.selectedTags.indexOf(tag);
@@ -41,7 +45,7 @@ export default class Tags extends Vue {
     if (!name) {
       return window.alert('标签名不可能为空！');
     }
-    // store.createTag(name);
+    this.$store.commit('createTag', name)
   }
 }
 </script>
