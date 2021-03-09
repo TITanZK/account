@@ -1,6 +1,6 @@
 <template>
   <Layout class-prefix="layout">
-    <NumberPad @update:value="onUpdateAmount" @submit="saveRecord"/>
+    <NumberPad :value.sync="record.amount" @submit="saveRecord"/>
     <Tabs :data-source="typeList" :value.sync="record.type"/>
     <div class="notes-wrapper">
       <FormItem field-name="备注"
@@ -42,11 +42,11 @@ export default class Money extends Vue {
     this.record.notes = value;
   }
 
-  onUpdateAmount(value: string) {
-    if (value !== '0' && value !== '0.') {
-      this.record.amount = parseFloat(value);
-    }
-  }
+  // onUpdateAmount(value: string) {
+  //   if (value !== '0' && value !== '0.') {
+  //     this.record.amount = parseFloat(value);
+  //   }
+  // }
 
   saveRecord(value: string) {
     if (value !== '0' && value !== '0.') {
