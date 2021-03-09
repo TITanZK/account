@@ -4,7 +4,7 @@
     <Tabs class-prefix="interval" :data-source="interList" :value.sync="interval"/>
     <ol>
       <li v-for="(group, index) in result" :key="index">
-        <h3 class="title">{{ group.title }}</h3>
+        <h3 class="title">{{ beautify(group.title) }}</h3>
         <ol>
           <li class="record" v-for="(item, index) in group.items" :key="index">
             <span>{{ tagString(item.tags) }}</span>
@@ -23,6 +23,7 @@ import {Component} from 'vue-property-decorator';
 import Tabs from '@/components/Tabs.vue';
 import interList from '@/constants/interList';
 import typeList from '@/constants/typeList';
+import dayjs from 'dayjs';
 
 @Component({
   components: {Tabs},
@@ -30,6 +31,22 @@ import typeList from '@/constants/typeList';
 export default class Statistics extends Vue {
   get recordList() {
     return (this.$store.state as RootState).recordList;
+  }
+
+  beautify(value: string) {
+    const day = dayjs(value);
+    const now = dayjs();
+    if (day.isSame(now, 'day')) {
+      return '今天';
+    } else if (day.isSame(now.subtract(1, 'day'), 'day')) {
+      return '昨天';
+    } else if (day.isSame(now.subtract(2, 'day'), 'day')) {
+      return '前天';
+    } else if (day.isSame(now, 'year')) {
+      return day.format('M月D日');
+    } else {
+      return day.format('YYYY年M月D日');
+    }
   }
 
   get result() {
@@ -76,11 +93,13 @@ export default class Statistics extends Vue {
   background: white;
   @extend %item;
 }
-.notes{
+
+.notes {
   margin-right: auto;
   margin-left: 28px;
   color: #999;
 }
+
 ::v-deep {
   .type-tabs-item {
     background: white;
