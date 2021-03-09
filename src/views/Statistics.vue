@@ -4,10 +4,12 @@
     <Tabs class-prefix="interval" :data-source="interList" :value.sync="interval"/>
     <ol>
       <li v-for="(group, index) in result" :key="index">
-        <h3>{{group.title}}</h3>
+        <h3 class="title">{{ group.title }}</h3>
         <ol>
-          <li v-for="(item, index) in group.items" :key="index">
-            {{ item.amount }}
+          <li class="record" v-for="(item, index) in group.items" :key="index">
+            <span>{{ tagString(item.tags) }}</span>
+            <span class="notes">{{ item.notes }}</span>
+            <span>￥{{ item.amount }}</span>
           </li>
         </ol>
       </li>
@@ -35,11 +37,15 @@ export default class Statistics extends Vue {
     type HashTableValue = { title: string; items: RecordItem[] }
     const hashTable: { [key: string]: HashTableValue } = {};
     for (let i = 0; i < this.recordList.length; i++) {
-      const [date, time] = recordList[i].createdAt!.split('T');
+      const [date] = recordList[i].createdAt!.split('T');
       hashTable[date] = hashTable[date] || {title: date, items: []};
       hashTable[date].items.push(recordList[i]);
     }
     return hashTable;
+  }
+
+  tagString(tags: string[]) {
+    return tags.length === 0 ? '无' : tags.join(',');
   }
 
   beforeCreate() {
@@ -54,6 +60,27 @@ export default class Statistics extends Vue {
 </script>
 
 <style lang="scss" scoped>
+%item {
+  padding: 8px 16px;
+  line-height: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title {
+  @extend %item;
+}
+
+.record {
+  background: white;
+  @extend %item;
+}
+.notes{
+  margin-right: auto;
+  margin-left: 28px;
+  color: #999;
+}
 ::v-deep {
   .type-tabs-item {
     background: white;
@@ -68,7 +95,7 @@ export default class Statistics extends Vue {
   }
 
   .interval-tabs-item {
-    height: 48px;
+    height: 42px;
   }
 }
 </style>
