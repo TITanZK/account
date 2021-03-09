@@ -42,12 +42,6 @@ export default class Money extends Vue {
     this.record.notes = value;
   }
 
-  // onUpdateAmount(value: string) {
-  //   if (value !== '0' && value !== '0.') {
-  //     this.record.amount = parseFloat(value);
-  //   }
-  // }
-
   saveRecord(value: string) {
     if (value !== '0' && value !== '0.') {
       this.$store.commit('createRecord', this.record);
