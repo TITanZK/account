@@ -9,6 +9,7 @@ Vue.use(Vuex);
 const store = new Vuex.Store({
   state: {
     recordList: [],
+    createTagError: null,
     tagList: [],
     currentTag: undefined
   } as RootState,
@@ -20,7 +21,7 @@ const store = new Vuex.Store({
       state.recordList = JSON.parse((window.localStorage.getItem('recordList')) || '[]');
     },
     createRecord(state, record: RecordItem) {
-      const record2: RecordItem = clone(record);
+      const record2 = clone(record);
       record2.createdAt = new Date().toISOString();
       state.recordList.push(record2);
       store.commit('saveRecords');
@@ -30,16 +31,21 @@ const store = new Vuex.Store({
     },
     fetchTags(state) {
       state.tagList = JSON.parse((window.localStorage.getItem('tagList')) || '[]');
+      if (!state.tagList || state.tagList.length === 0) {
+        store.commit('createTag','衣服');
+        store.commit('createTag','吃饭');
+        store.commit('createTag','住宿');
+        store.commit('createTag','出行');
+      }
     },
     createTag(state, name: string) {
       const names = state.tagList.map(item => item.name);
       if (names.indexOf(name) >= 0) {
-        window.alert('标签名重复！');
+        return window.alert('标签名重复！');
       }
       const id = createId().toString();
       state.tagList.push({id, name});
       store.commit('saveTags');
-      window.alert('添加成功！');
     },
     removeTag(state, id: string) {
       let index = -1;
@@ -52,7 +58,7 @@ const store = new Vuex.Store({
       if (index >= 0) {
         state.tagList.splice(index, 1);
         store.commit('saveTags');
-        window.alert('删除成功！')
+        window.alert('删除成功！');
         router.back();
       } else {
         window.alert('删除失败！');

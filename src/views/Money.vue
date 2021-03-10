@@ -5,7 +5,7 @@
     <div class="notes-wrapper">
       <FormItem field-name="备注"
                 placeholder="请在此处添加备注"
-                @update:value="onUpdateNotes"/>
+                :value.sync="record.notes"/>
     </div>
     <Tags @update:value="record.tags = $event"/>
   </Layout>
@@ -46,7 +46,8 @@ export default class Money extends Vue {
     if (value !== '0' && value !== '0.') {
       this.$store.commit('createRecord', this.record);
     }
-
+    window.alert('已保存');
+    this.record.notes = '';
   }
 }
 </script>

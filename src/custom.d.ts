@@ -13,6 +13,7 @@ type Tag = {
 
 type RootState = {
   recordList: RecordItem[];
+  createTagError: Error | null;
   tagList: Tag[];
   currentTag?: Tag;
 }
