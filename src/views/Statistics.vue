@@ -38,12 +38,13 @@ export default class Statistics extends Vue {
 
   get groupList() {
     const {recordList} = this;
-    if (recordList.length === 0) {return [];}
+
     //防止sort()更改原数据
     const newList = clone(recordList)
         .filter(r => r.type === this.type)
         .sort((a, b) => dayjs(b.createdAt).valueOf() - dayjs(a.createdAt).valueOf());
     //取recordList第一个
+    if (newList.length === 0) {return [];}
     type Result = [{ title: string; total?: number; items: RecordItem[] }]
     const result: Result = [{title: dayjs(newList[0].createdAt).format('YYYY-MM-DD'), items: [newList[0]]}];
     //和recordList里面的每一项进行比较
