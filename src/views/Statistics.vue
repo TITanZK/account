@@ -1,9 +1,10 @@
 <template>
   <Layout>
     <Tabs class-prefix="type" :data-source="typeList" :value.sync="type"/>
+    <Chart :options="x"/>
     <ol v-if="groupList.length>0">
       <li v-for="(group, index) in groupList" :key="index">
-        <h3 class="title">{{ beautify(group.title) }} <span>￥{{group.total}}</span></h3>
+        <h3 class="title">{{ beautify(group.title) }} <span>￥{{ group.total }}</span></h3>
         <ol>
           <li class="record" v-for="(item, index) in group.items" :key="index">
             <span>{{ tagString(item.tags) }}</span>
@@ -24,13 +25,40 @@ import Tabs from '@/components/Tabs.vue';
 import typeList from '@/constants/typeList';
 import dayjs from 'dayjs';
 import clone from '@/lib/clone';
+import Chart from '@/components/Chart.vue';
 
 @Component({
-  components: {Tabs},
+  components: {Tabs, Chart},
 })
 export default class Statistics extends Vue {
   type = '-';
   typeList = typeList;
+
+  get x() {
+    return {
+      xAxis: {
+        type: 'category',
+        data: [
+          '1', '2', '3', '4', '5', '6', '7','8','9','10',
+          '11', '12', '13', '14', '15', '16', '17','18','19','20',
+          '21', '22', '23', '24', '25', '26', '27','28','29','30'
+        ]
+      },
+      yAxis: {
+        type: 'value'
+      },
+      series: [{
+        data: [
+            150, 230, 224, 218, 135, 147, 260,
+            150, 230, 224, 218, 135, 147, 260,
+            150, 230, 224, 218, 135, 147, 260,
+            150, 230, 224, 218, 135, 147, 260,
+            150, 230
+        ],
+        type: 'line'
+      }]
+    };
+  }
 
   //计算属性
   get recordList() {
@@ -39,7 +67,6 @@ export default class Statistics extends Vue {
 
   get groupList() {
     const {recordList} = this;
-
     //防止sort()更改原数据
     const newList = clone(recordList)
         .filter(r => r.type === this.type)
@@ -91,10 +118,11 @@ export default class Statistics extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.noResult{
+.noResult {
   padding: 80px 16px 0;
   text-align: center;
 }
+
 %item {
   padding: 8px 16px;
   line-height: 24px;
