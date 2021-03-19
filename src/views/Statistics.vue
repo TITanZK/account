@@ -2,7 +2,7 @@
   <Layout>
     <Tabs class-prefix="type" :data-source="typeList" :value.sync="type"/>
     <div ref="chartWrapper" class="chart-wrapper">
-      <Chart class="chart" :options="x"/>
+      <Chart class="chart" :options="chartOptions"/>
     </div>
     <ol v-if="groupList.length>0">
       <li v-for="(group, index) in groupList" :key="index">
@@ -28,6 +28,7 @@ import typeList from '@/constants/typeList';
 import dayjs from 'dayjs';
 import clone from '@/lib/clone';
 import Chart from '@/components/Chart.vue';
+import _ from 'lodash';
 
 @Component({
   components: {Tabs, Chart},
@@ -41,13 +42,38 @@ export default class Statistics extends Vue {
     div.scrollLeft = div.scrollWidth;
   }
 
-  get x() {
+  get keyValueList() {
+    const today = new Date();
+    const array = [];
+    for (let i = 0; i <= 29; i++) {
+      const dateString = dayjs(today).subtract(i, 'day').format('YYYY-MM-DD');
+      const found = _.find(this.groupList, {title: dateString});
+      array.push({
+        key: dateString,
+        value: found ? found.total : 0
+      });
+    }
+    array.sort((a, b) => {
+      if (a.key > b.key) {
+        return 1;
+      } else if (a.key === b.key) {
+        return 0;
+      } else {
+        return -1;
+      }
+    });
+    return array;
+  }
+
+  get chartOptions() {
+    const keys = this.keyValueList.map(item => item.key);
+    const values = this.keyValueList.map(item => item.value);
     return {
       tooltip: {
         show: true,
         triggerOn: 'click',
         formatter: '{c}',
-        position:'top'
+        position: 'top'
       },
       grid: {
         left: 0,
@@ -61,24 +87,14 @@ export default class Statistics extends Vue {
           alignWithLabel: true
         },
         type: 'category',
-        data: [
-          '1', '2', '3', '4', '5', '6', '7', '8', '9', '10',
-          '11', '12', '13', '14', '15', '16', '17', '18', '19', '20',
-          '21', '22', '23', '24', '25', '26', '27', '28', '29', '30'
-        ]
+        data: keys
       },
       yAxis: {
         splitLine: false,
         axisLine: false
       },
       series: [{
-        data: [
-          150, 230, 224, 218, 135, 147, 260,
-          150, 230, 224, 218, 135, 147, 260,
-          150, 230, 224, 218, 135, 147, 260,
-          150, 230, 224, 218, 135, 147, 260,
-          150, 230
-        ],
+        data: values,
         itemStyle: {
           color: '#666',
           borderWidth: 1

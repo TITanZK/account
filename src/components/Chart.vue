@@ -22,6 +22,6 @@ export default class Chart extends Vue {
 <style scoped>
 .wrapper{
   /*width: 100%;*/
-  height: 400px;
+  height: 350px;
 }
 </style>

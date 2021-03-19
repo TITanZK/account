@@ -10,9 +10,11 @@
   },
   "dependencies": {
     "@types/echarts": "^4.9.6",
+    "@types/lodash": "^4.14.168",
     "core-js": "^3.6.5",
     "dayjs": "^1.10.4",
     "echarts": "^4.8.0",
+    "lodash": "^4.17.21",
     "register-service-worker": "^1.7.1",
     "svgo-loader": "^2.2.1",
     "vue": "^2.6.11",
