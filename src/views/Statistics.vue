@@ -37,16 +37,29 @@ export default class Statistics extends Vue {
   typeList = typeList;
 
   mounted() {
-    this.$refs.chartWrapper.scrollLeft = 9999;
+    const div = this.$refs.chartWrapper;
+    div.scrollLeft = div.scrollWidth;
   }
 
   get x() {
     return {
+      tooltip: {
+        show: true,
+        triggerOn: 'click',
+        formatter: '{c}',
+        position:'top'
+      },
       grid: {
         left: 0,
         right: 0
       },
       xAxis: {
+        axisLine: {
+          lineStyle: {color: '#666'}
+        },
+        axisTick: {
+          alignWithLabel: true
+        },
         type: 'category',
         data: [
           '1', '2', '3', '4', '5', '6', '7', '8', '9', '10',
@@ -66,7 +79,13 @@ export default class Statistics extends Vue {
           150, 230, 224, 218, 135, 147, 260,
           150, 230
         ],
-        type: 'line'
+        itemStyle: {
+          color: '#666',
+          borderWidth: 1
+        },
+        symbolSize: 14,
+        symbol: 'circle',
+        type: 'line',
       }]
     };
   }
@@ -134,6 +153,10 @@ export default class Statistics extends Vue {
 
   &-wrapper {
     overflow: auto;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 }
 
