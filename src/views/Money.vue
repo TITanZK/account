@@ -4,8 +4,12 @@
     <Tabs :data-source="typeList" :value.sync="record.type"/>
     <div class="notes-wrapper">
       <FormItem field-name="备注"
-                placeholder="请在此处添加备注"
+                placeholder="此处添加备注"
                 :value.sync="record.notes"/>
+      <FormItem type="date"
+                field-name=""
+                class-prefix="fucking"
+                :value.sync="record.createdAt"/>
     </div>
     <Tags ref="tag" @update:value="record.tags = $event"/>
   </Layout>
@@ -31,7 +35,7 @@ export default class Money extends Vue {
 
   typeList = typeList;
   record: RecordItem = {
-    tags: [], notes: '', type: '-', amount: 0
+    tags: [], notes: '', type: '-', amount: 0, createdAt: new Date().toISOString()
   };
 
   created() {
@@ -63,5 +67,6 @@ export default class Money extends Vue {
 
 .notes-wrapper {
   padding: 12px 0;
+  display: flex;
 }
 </style>

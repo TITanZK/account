@@ -1,9 +1,9 @@
 <template>
   <label class="formItem">
-    <span class="name">{{ this.fieldName }}</span>
-    <input type="text"
+    <span class="name" :class="{[classPrefix+'-form']:classPrefix}">{{ this.fieldName }}</span>
+    <input :type="type || 'text'"
            :value="value"
-           @input="onValueChanged($event.target.value)"
+           @change="onValueChanged($event.target.value)"
            :placeholder="placeholder">
   </label>
 </template>
@@ -15,9 +15,10 @@ import {Component, Prop} from 'vue-property-decorator';
 @Component
 export default class FormItem extends Vue {
   @Prop({default: ''}) readonly value!: string;
-
   @Prop({required: true}) fieldName!: string;
   @Prop() placeholder?: string;
+  @Prop() type?: string;
+  @Prop(String) classPrefix?: string;
 
   onValueChanged(value: string) {
     this.$emit('update:value', value);
@@ -35,7 +36,9 @@ export default class FormItem extends Vue {
   .name {
     padding-right: 16px;
   }
-
+  .fucking-form{
+    padding-right: 0;
+  }
   input {
     height: 40px;
     flex-grow: 1;
