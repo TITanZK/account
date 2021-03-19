@@ -7,7 +7,7 @@
                 placeholder="请在此处添加备注"
                 :value.sync="record.notes"/>
     </div>
-    <Tags @update:value="record.tags = $event"/>
+    <Tags ref="tag" @update:value="record.tags = $event"/>
   </Layout>
 </template>
 
@@ -45,9 +45,12 @@ export default class Money extends Vue {
   saveRecord(value: string) {
     if (value !== '0' && value !== '0.') {
       this.$store.commit('createRecord', this.record);
+      window.alert('已保存');
+      this.record.notes = '';
+      (this.$refs.tag as Tags).selectedTags = [];
+    } else {
+      window.alert('请输入金额！');
     }
-    window.alert('已保存');
-    this.record.notes = '';
   }
 }
 </script>
