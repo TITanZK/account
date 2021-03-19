@@ -9,7 +9,7 @@
       <FormItem :value="currentTag.name"
                 @update:value="update"
                 field-name="标签名"
-                placeholder="请输入标签名"/>
+                />
     </div>
     <div class="button-wrapper">
       <Button @click="remove">删除标签</Button>
