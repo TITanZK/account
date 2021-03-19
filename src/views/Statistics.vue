@@ -80,6 +80,11 @@ export default class Statistics extends Vue {
         right: 0
       },
       xAxis: {
+        axisLabel: {
+          formatter: function (value: string) {
+            return value.substring(5);
+          }
+        },
         axisLine: {
           lineStyle: {color: '#666'}
         },
