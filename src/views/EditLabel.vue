@@ -30,7 +30,7 @@ export default class EditLabel extends Vue {
   get currentTag() {
     return this.$store.state.currentTag;
   }
-
+  //页面创建后获取数据
   created() {
     this.$store.commit('fetchTags');
     const id = this.$route.params.id;

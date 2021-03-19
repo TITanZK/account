@@ -72,9 +72,10 @@ const store = new Vuex.Store({
         const names = state.tagList.map(item => item.name);
         if (names.indexOf(name) >= 0) {
           window.alert('标签名重复了！');
+          //待修复BUG
         } else {
           const tag = state.tagList.filter(item => item.id === id)[0];
-          tag.id = tag.name = name;//id 存在bug
+          tag.name = name;
           store.commit('saveTags');
         }
       }
