@@ -13,13 +13,16 @@ export default class Chart extends Vue {
   chart?: ECharts;
 
   mounted() {
-    this.chart = echarts.init(this.$refs.wrapper);
+    if (this.options === undefined) {
+      return console.log('options is null');
+    }
+    this.chart = echarts.init(this.$refs.wrapper as HTMLDivElement);
     this.chart.setOption(this.options);
   }
 
   @Watch('options')
   onOptionsChange(newValue: EChartOption) {
-    this.chart.setOption(newValue);
+    this.chart!.setOption(newValue);
   }
 }
 
