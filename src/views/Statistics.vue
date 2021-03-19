@@ -38,7 +38,7 @@ export default class Statistics extends Vue {
   typeList = typeList;
 
   mounted() {
-    const div = this.$refs.chartWrapper;
+    const div = this.$refs.chartWrapper as HTMLDivElement;
     div.scrollLeft = div.scrollWidth;
   }
 
