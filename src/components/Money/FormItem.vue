@@ -1,10 +1,21 @@
 <template>
   <label class="formItem">
-    <span class="name" :class="{[classPrefix+'-form']:classPrefix}">{{ this.fieldName }}</span>
-    <input :type="type || 'text'"
-           :value="value"
-           @change="onValueChanged($event.target.value)"
-           :placeholder="placeholder">
+    <template v-if="type === 'date'">
+      <input :class="{[classPrefix+'-input']:classPrefix}"
+             :type="type || 'text'"
+             :value="value"
+             @change="onValueChanged($event.target.value)"
+             :placeholder="placeholder">
+      <span class="name" :class="{[classPrefix+'-form']:classPrefix}">{{ this.fieldName }}</span>
+    </template>
+    <template v-else>
+      <span class="name">{{ this.fieldName }}</span>
+      <input type="text"
+             :value="value"
+             @change="onValueChanged($event.target.value)"
+             :placeholder="placeholder">
+    </template>
+
   </label>
 </template>
 
@@ -36,15 +47,23 @@ export default class FormItem extends Vue {
   .name {
     padding-right: 16px;
   }
-  .fucking-form{
+
+  .fucking-form {
     padding-right: 0;
   }
+
   input {
     height: 40px;
     flex-grow: 1;
     padding-right: 16px;
     background: transparent;
     border: none;
+  }
+
+  .fucking-input {
+    border: 1px solid #ccc;
+    padding-right: 0;
+    padding-left: 10px;
   }
 }
 </style>
