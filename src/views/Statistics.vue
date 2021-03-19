@@ -1,7 +1,9 @@
 <template>
   <Layout>
     <Tabs class-prefix="type" :data-source="typeList" :value.sync="type"/>
-    <Chart :options="x"/>
+    <div ref="chartWrapper" class="chart-wrapper">
+      <Chart class="chart" :options="x"/>
+    </div>
     <ol v-if="groupList.length>0">
       <li v-for="(group, index) in groupList" :key="index">
         <h3 class="title">{{ beautify(group.title) }} <span>￥{{ group.total }}</span></h3>
@@ -34,26 +36,35 @@ export default class Statistics extends Vue {
   type = '-';
   typeList = typeList;
 
+  mounted() {
+    this.$refs.chartWrapper.scrollLeft = 9999;
+  }
+
   get x() {
     return {
+      grid: {
+        left: 0,
+        right: 0
+      },
       xAxis: {
         type: 'category',
         data: [
-          '1', '2', '3', '4', '5', '6', '7','8','9','10',
-          '11', '12', '13', '14', '15', '16', '17','18','19','20',
-          '21', '22', '23', '24', '25', '26', '27','28','29','30'
+          '1', '2', '3', '4', '5', '6', '7', '8', '9', '10',
+          '11', '12', '13', '14', '15', '16', '17', '18', '19', '20',
+          '21', '22', '23', '24', '25', '26', '27', '28', '29', '30'
         ]
       },
       yAxis: {
-        type: 'value'
+        splitLine: false,
+        axisLine: false
       },
       series: [{
         data: [
-            150, 230, 224, 218, 135, 147, 260,
-            150, 230, 224, 218, 135, 147, 260,
-            150, 230, 224, 218, 135, 147, 260,
-            150, 230, 224, 218, 135, 147, 260,
-            150, 230
+          150, 230, 224, 218, 135, 147, 260,
+          150, 230, 224, 218, 135, 147, 260,
+          150, 230, 224, 218, 135, 147, 260,
+          150, 230, 224, 218, 135, 147, 260,
+          150, 230
         ],
         type: 'line'
       }]
@@ -118,6 +129,14 @@ export default class Statistics extends Vue {
 </script>
 
 <style lang="scss" scoped>
+.chart {
+  width: 430%;
+
+  &-wrapper {
+    overflow: auto;
+  }
+}
+
 .noResult {
   padding: 80px 16px 0;
   text-align: center;
