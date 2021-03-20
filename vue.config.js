@@ -1,6 +1,9 @@
 const path = require("path")
 
 module.exports = {
+  publicPath: process.env.NODE_ENV === 'production'
+    ? '/account_vue_website/'
+    : '/',
   pwa: {
     iconPaths: {
       favicon32: 'favicon.ico',
