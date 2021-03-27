@@ -1,6 +1,6 @@
 <template>
   <Layout class-prefix="layout">
-    <NumberPad :value.sync="record.amount" @submit="saveRecord"/>
+    <NumberPad ref="numberOutput" :value.sync="record.amount" @submit="saveRecord"/>
     <Tabs :data-source="typeList" :value.sync="record.type"/>
     <div class="notes-wrapper">
       <FormItem field-name="备注"
@@ -47,15 +47,21 @@ export default class Money extends Vue {
   }
 
   saveRecord(value: string) {
-    if(!this.record.tags || this.record.tags.length === 0) return window.alert('请至少选择一个标签！')
-    if (value !== '0' && value !== '0.') {
-      this.$store.commit('createRecord', this.record);
-      window.alert('已保存');
-      this.record.notes = '';
-      (this.$refs.tag as Tags).selectedTags = [];
+    if (!this.record.tags || this.record.tags.length === 0) {
+      window.alert('请至少选择一个标签！');
     } else {
-      window.alert('请输入金额！');
+      if (value !== '0' && value !== '0.') {
+        this.$store.commit('createRecord', this.record);
+        window.alert('已保存');
+        this.record.notes = '';
+        this.record.tags = [];
+        (this.$refs.tag as Tags).selectedTags = [];
+        (this.$refs.numberOutput as NumberPad).output = '0';
+      } else {
+        window.alert('请输入金额！');
+      }
     }
+
   }
 }
 </script>
