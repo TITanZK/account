@@ -46,6 +46,7 @@ export default class FormItem extends Vue {
 
   .name {
     padding-right: 16px;
+    flex-shrink: 0;
   }
 
   .fucking-form {
